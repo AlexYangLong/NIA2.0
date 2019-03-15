@@ -32,9 +32,9 @@ class CommentService(object):
                 comment.is_delete = True
                 session.add(comment)
 
-    def get_comment_by_article(self, article_id):
+    def get_comment_by_article(self, article_id, page_size=10, page_now=1):
         with session_scope() as session:
-            comment_list = session.query(Comment).filter(Comment.article_id == article_id)
+            comment_list = session.query(Comment).filter(Comment.article_id == article_id).offset((page_now - 1) * page_size).limit(page_size)
             if not list(comment_list):
                 return None
             return [comment.to_dict(wanted_list=["id", "comment_con", "comment_id", "comment_user", "create_time"]) for comment in comment_list]

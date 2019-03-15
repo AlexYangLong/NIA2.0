@@ -44,19 +44,21 @@ class EssayService(object):
                 return None
             return essay.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"])
 
-    def get_all_essay(self, user_id=None):
+    def get_all_essay_by_page(self, user_id=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not user_id:
-                essay_list = session.query(Essay).filter(Essay.is_delete == False)
+                essay_list = session.query(Essay).filter(Essay.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                essay_list = session.query(Essay).filter(Essay.user_id == user_id, Essay.is_delete == False)
+                essay_list = session.query(Essay).filter(Essay.user_id == user_id, Essay.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [essay.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"]) for essay in essay_list]
 
-    def get_essay_by_title(self, title=None):
+    def get_essay_by_title_page(self, title=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not title:
-                essay_list = session.query(Essay).filter(Essay.is_delete == False)
+                essay_list = session.query(Essay).filter(Essay.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                essay_list = session.query(Essay).filter(Essay.title.like("%{}%".format(title)), Essay.is_delete == False)
+                essay_list = session.query(Essay).filter(Essay.title.like("%{}%".format(title)), Essay.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [essay.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"]) for essay in essay_list]
+
+
 

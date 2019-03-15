@@ -51,20 +51,20 @@ class DiaryService(object):
                 return None
             return diary.to_dict(wanted_list=["id", "user_id", "week", "weather", "mood", "content", "status", "zan_times", "cover", "create_time"])
 
-    def get_all_diary(self, user_id=None):
+    def get_all_diary_by_page(self, user_id=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not user_id:
-                diary_list = session.query(Diary).filter(Diary.is_delete == False)
+                diary_list = session.query(Diary).filter(Diary.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                diary_list = session.query(Diary).filter(Diary.user_id == user_id, Diary.is_delete == False)
+                diary_list = session.query(Diary).filter(Diary.user_id == user_id, Diary.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [diary.to_dict(wanted_list=["id", "user_id", "week", "weather", "mood", "content", "status", "zan_times", "cover", "create_time"]) for diary in diary_list]
 
-    def get_diary_by_title(self, title=None):
+    def get_diary_by_title_page(self, title=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not title:
-                diary_list = session.query(Diary).filter(Diary.is_delete == False)
+                diary_list = session.query(Diary).filter(Diary.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                diary_list = session.query(Diary).filter(Diary.content.like("%{}%".format(title)), Diary.is_delete == False)
+                diary_list = session.query(Diary).filter(Diary.content.like("%{}%".format(title)), Diary.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [diary.to_dict(wanted_list=["id", "user_id", "week", "weather", "mood", "content", "status", "zan_times", "cover", "create_time"]) for diary in diary_list]
 
 

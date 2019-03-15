@@ -30,6 +30,21 @@ ESSAY_NOT_EXIST = {"code": 1101, "msg_cn": "随笔不存在", "msg_en": "Essay i
 ESSAY_STATUS_NOT_INT = {"code": 1102, "msg_cn": "随笔状态值不是整数", "msg_en": "Essay status is not integer."}
 ESSAY_STATUS_OUT_RANGE = {"code": 1103, "msg_cn": "随笔状态值超出范围", "msg_en": "Essay status is out of range."}
 
+# 读后感相关
+IMPRESSION_NOT_EXIST = {"code": 1201, "msg_cn": "读后感不存在", "msg_en": "Impression is not existed."}
+IMPRESSION_STATUS_NOT_INT = {"code": 1202, "msg_cn": "读后感状态值不是整数", "msg_en": "Impression status is not integer."}
+IMPRESSION_STATUS_OUT_RANGE = {"code": 1203, "msg_cn": "读后感状态值超出范围", "msg_en": "Impression status is out of range."}
+
+# 日记相关
+DIARY_NOT_EXIST = {"code": 1301, "msg_cn": "日记不存在", "msg_en": "Diary is not existed."}
+DIARY_STATUS_NOT_INT = {"code": 1302, "msg_cn": "日记状态值不是整数", "msg_en": "Diary status is not integer."}
+DIARY_STATUS_OUT_RANGE = {"code": 1303, "msg_cn": "日记状态值超出范围", "msg_en": "Diary status is out of range."}
+
+# 随想相关
+CAPRICCIO_NOT_EXIST = {"code": 1401, "msg_cn": "随想不存在", "msg_en": "Capriccio is not existed."}
+CAPRICCIO_STATUS_NOT_INT = {"code": 1402, "msg_cn": "随想状态值不是整数", "msg_en": "Capriccio status is not integer."}
+CAPRICCIO_STATUS_OUT_RANGE = {"code": 1403, "msg_cn": "随想状态值超出范围", "msg_en": "Capriccio status is out of range."}
+
 # 评论相关
-COMMENT_NOT_BELONG_USER = {"code": 1201, "msg_cn": "评论不属于该用户", "msg_en": "Comment don't belong this user."}
+COMMENT_NOT_BELONG_USER = {"code": 1501, "msg_cn": "评论不属于该用户", "msg_en": "Comment don't belong this user."}
 

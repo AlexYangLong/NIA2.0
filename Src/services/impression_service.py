@@ -49,20 +49,20 @@ class ImpressionService(object):
                 return None
             return impression.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"])
 
-    def get_all_impression(self, user_id=None):
+    def get_all_impression_by_page(self, user_id=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not user_id:
-                impression_list = session.query(Impression).filter(Impression.is_delete == False)
+                impression_list = session.query(Impression).filter(Impression.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                impression_list = session.query(Impression).filter(Impression.user_id == user_id, Impression.is_delete == False)
+                impression_list = session.query(Impression).filter(Impression.user_id == user_id, Impression.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [impression.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"]) for impression in impression_list]
 
-    def get_impression_by_title(self, title=None):
+    def get_impression_by_title_page(self, title=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not title:
-                impression_list = session.query(Impression).filter(Impression.is_delete == False)
+                impression_list = session.query(Impression).filter(Impression.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                impression_list = session.query(Impression).filter(Impression.title.like("%{}%".format(title)), Impression.is_delete == False)
+                impression_list = session.query(Impression).filter(Impression.title.like("%{}%".format(title)), Impression.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [impression.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"]) for impression in impression_list]
 
 

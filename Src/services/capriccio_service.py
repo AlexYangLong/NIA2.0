@@ -47,20 +47,20 @@ class CapriccioService(object):
                 return None
             return capriccio.to_dict(wanted_list=["id", "user_id", "extract", "content", "status", "zan_times", "cover", "create_time"])
 
-    def get_all_capriccio(self, user_id=None):
+    def get_all_capriccio_by_page(self, user_id=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not user_id:
-                capriccio_list = session.query(Capriccio).filter(Capriccio.is_delete == False)
+                capriccio_list = session.query(Capriccio).filter(Capriccio.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                capriccio_list = session.query(Capriccio).filter(Capriccio.user_id == user_id, Capriccio.is_delete == False)
+                capriccio_list = session.query(Capriccio).filter(Capriccio.user_id == user_id, Capriccio.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [capriccio.to_dict(wanted_list=["id", "user_id", "extract", "content", "status", "zan_times", "cover", "create_time"]) for capriccio in capriccio_list]
 
-    def get_capriccio_by_title(self, title=None):
+    def get_capriccio_by_title_page(self, title=None, page_size=10, page_now=1):
         with session_scope() as session:
             if not title:
-                capriccio_list = session.query(Capriccio).filter(Capriccio.is_delete == False)
+                capriccio_list = session.query(Capriccio).filter(Capriccio.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             else:
-                capriccio_list = session.query(Capriccio).filter(Capriccio.title.like("%{}%".format(title)), Capriccio.is_delete == False)
+                capriccio_list = session.query(Capriccio).filter(Capriccio.title.like("%{}%".format(title)), Capriccio.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [capriccio.to_dict(wanted_list=["id", "user_id", "extract", "content", "status", "zan_times", "cover", "create_time"]) for capriccio in capriccio_list]
 
 

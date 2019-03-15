@@ -5,6 +5,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(ROOT_DIR, BASE_DIR)
 
 
+HOST_NAME = "http://127.0.0.1:5001"
+UPLOAD_FILE_PATH = "/static/upload/"
+
+
 class CommonConfig(object):
     SECRET_KEY = os.urandom(24)
     # # session相关配置，并将session中的数据保存到redis

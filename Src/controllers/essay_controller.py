@@ -5,7 +5,7 @@ from flask_restful import Resource
 
 from Src.common import status_code
 from Src.common.constant import ESSAY_REQUIRED_FIELD, ESSAY_STATUS
-from Src.config.config import ROOT_DIR
+from Src.config.config import ROOT_DIR, HOST_NAME, UPLOAD_FILE_PATH
 from Src.services.essay_service import EssayService
 from Src.utils import check_utils
 from Src.utils import log as logger
@@ -25,29 +25,31 @@ class EssayController(Resource):
                 if not essay:
                     return status_code.ESSAY_NOT_EXIST
                 result = status_code.SUCCESS
-                essay["cover"] = os.path.join(ROOT_DIR, "Web/static/" + essay["cover"])
+                # essay["cover"] = os.path.join(ROOT_DIR, "Web/static/" + essay["cover"])
+                essay["cover"] = "".join([HOST_NAME, UPLOAD_FILE_PATH, essay["cover"]])
                 result["data"] = essay
                 return result
             else:
                 data = request.args
-                if not data:
-                    essay_list = essay_service.get_all_essay()
-                    result = status_code.SUCCESS
-                    for essay in essay_list:
-                        # essay["cover"] = os.path.join(ROOT_DIR, "Web/static/" + essay["cover"])
-                        essay["cover"] = "http://127.0.0.1:5001/static/" + essay["cover"]
-                    result["data"] = essay_list
-                    return result
-                elif isinstance(data, dict) and data.get("title"):
-                    essay_list = essay_service.get_essay_by_title(title=data.get("title"))
-                    result = status_code.SUCCESS
-                    for essay in essay_list:
-                        # essay["cover"] = os.path.join(ROOT_DIR, "Web/static/" + essay["cover"])
-                        essay["cover"] = "http://127.0.0.1:5001/static/" + essay["cover"]
-                    result["data"] = essay_list
-                    return result
-                else:
+                if not (isinstance(data, dict) and data.get("pn") and data.get("ps")):
                     return status_code.ARGS_PARAMS_ERROR
+                if not (data.get("pn").isdigit() and data.get("pn").isdigit()):
+                    raise Exception("请求参数PN和PS必须是整数")
+                page_size = int(data.get("ps"))
+                page_now = int(data.get("pn"))
+                if not data.get("title"):
+                    essay_list = essay_service.get_all_essay_by_page(page_now=page_now,
+                                                                     page_size=page_size)
+                else:
+                    essay_list = essay_service.get_essay_by_title_page(title=data.get("title"),
+                                                                       page_now=page_now,
+                                                                       page_size=page_size)
+                result = status_code.SUCCESS
+                for essay in essay_list:
+                    # essay["cover"] = os.path.join(ROOT_DIR, "Web/static/" + essay["cover"])
+                    essay["cover"] = "".join([HOST_NAME, UPLOAD_FILE_PATH, essay["cover"]])  # "http://127.0.0.1:5001/static/" + essay["cover"]
+                result["data"] = essay_list
+                return result
         except Exception as ex:
             print(ex)
             logger.error("获取随笔失败,{}".format(ex))
