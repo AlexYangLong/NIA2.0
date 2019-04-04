@@ -212,4 +212,17 @@ class Comment(BaseModel, Base):
     comment_user = Column(Integer, ForeignKey("user_info.id"), nullable=False)  # 用户表外键id
 
 
+class Address(BaseModel, Base):
+    """
+    通讯录
+    """
+
+    __tablename__ = "address"
+    user_id = Column(Integer, ForeignKey("user_info.id"), nullable=False)  # 外键id
+    link_name = Column(String(20), nullable=False)  # 联系人姓名
+    link_phone = Column(String(12), nullable=False)  # 联系人电话
+    link_email = Column(String(64))  # 联系人邮箱
+    link_address = Column(String(120))  # 联系人住址
+
+
 Base.metadata.create_all(engine)

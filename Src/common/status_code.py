@@ -48,3 +48,6 @@ CAPRICCIO_STATUS_OUT_RANGE = {"code": 1403, "msg_cn": "随想状态值超出范�
 # 评论相关
 COMMENT_NOT_BELONG_USER = {"code": 1501, "msg_cn": "评论不属于该用户", "msg_en": "Comment don't belong this user."}
 
+# 通讯录相关
+ADDRESS_NOT_EXIST = {"code": 1601, "msg_cn": "通讯录不存在", "msg_en": "Address is not existed."}
+

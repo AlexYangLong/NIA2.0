@@ -37,8 +37,10 @@ class DiaryController(Resource):
                     raise Exception("请求参数pn和ps必须是整数")
                 page_size = int(data.get("ps"))
                 page_now = int(data.get("pn"))
+                user_id = request.form.get('user_id')
                 if not data.get("title"):
-                    diary_list = diary_service.get_all_diary_by_page(page_now=page_now,
+                    diary_list = diary_service.get_all_diary_by_page(user_id=user_id,
+                                                                     page_now=page_now,
                                                                      page_size=page_size)
                 else:
                     diary_list = diary_service.get_diary_by_title_page(title=data.get("title"),

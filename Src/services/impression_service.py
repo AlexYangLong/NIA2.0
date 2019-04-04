@@ -5,6 +5,7 @@
 
 from Src.common.model import Impression
 from Src.common.service import session_scope
+from Src.utils.check_utils import check_param_format
 
 
 class ImpressionService(object):
@@ -53,6 +54,8 @@ class ImpressionService(object):
         with session_scope() as session:
             if not user_id:
                 impression_list = session.query(Impression).filter(Impression.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
+            elif not check_param_format(param_name=user_id, pattern_list=[r'^[1-9][0-9]*']):
+                raise Exception("用户ID格式错误")
             else:
                 impression_list = session.query(Impression).filter(Impression.user_id == user_id, Impression.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [impression.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"]) for impression in impression_list]

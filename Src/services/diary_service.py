@@ -5,6 +5,7 @@
 
 from Src.common.model import Diary
 from Src.common.service import session_scope
+from Src.utils.check_utils import check_param_format
 
 
 class DiaryService(object):
@@ -55,6 +56,8 @@ class DiaryService(object):
         with session_scope() as session:
             if not user_id:
                 diary_list = session.query(Diary).filter(Diary.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
+            elif not check_param_format(param_name=user_id, pattern_list=[r'^[1-9][0-9]*']):
+                raise Exception("用户ID格式错误")
             else:
                 diary_list = session.query(Diary).filter(Diary.user_id == user_id, Diary.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [diary.to_dict(wanted_list=["id", "user_id", "week", "weather", "mood", "content", "status", "zan_times", "cover", "create_time"]) for diary in diary_list]

@@ -5,6 +5,7 @@
 
 from Src.common.model import Capriccio
 from Src.common.service import session_scope
+from Src.utils.check_utils import check_param_format
 
 
 class CapriccioService(object):
@@ -51,6 +52,8 @@ class CapriccioService(object):
         with session_scope() as session:
             if not user_id:
                 capriccio_list = session.query(Capriccio).filter(Capriccio.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
+            elif not check_param_format(param_name=user_id, pattern_list=[r'^[1-9][0-9]*']):
+                raise Exception("用户ID格式错误")
             else:
                 capriccio_list = session.query(Capriccio).filter(Capriccio.user_id == user_id, Capriccio.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [capriccio.to_dict(wanted_list=["id", "user_id", "extract", "content", "status", "zan_times", "cover", "create_time"]) for capriccio in capriccio_list]

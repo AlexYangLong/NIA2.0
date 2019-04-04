@@ -1,5 +1,6 @@
 from Src.common.model import Essay
 from Src.common.service import session_scope
+from Src.utils.check_utils import check_param_format
 
 
 class EssayService(object):
@@ -48,6 +49,8 @@ class EssayService(object):
         with session_scope() as session:
             if not user_id:
                 essay_list = session.query(Essay).filter(Essay.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
+            elif not check_param_format(param_name=user_id, pattern_list=[r'^[1-9][0-9]*']):
+                raise Exception("用户ID格式错误")
             else:
                 essay_list = session.query(Essay).filter(Essay.user_id == user_id, Essay.is_delete == False).offset((page_now - 1) * page_size).limit(page_size)
             return [essay.to_dict(wanted_list=["id", "user_id", "title", "abstract", "content", "status", "zan_times", "cover", "create_time"]) for essay in essay_list]

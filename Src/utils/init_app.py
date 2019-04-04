@@ -3,6 +3,7 @@ from flask import Flask
 from flask_restful import Api
 
 from Src.config.config import ROOT_DIR, DevelopConfig
+from Src.controllers.address_controller import AddressController
 from Src.controllers.capriccio_controller import CapriccioController
 from Src.controllers.comment_controller import CommentController
 from Src.controllers.diary_controller import DiaryController
@@ -33,5 +34,6 @@ def create_app():
     api.add_resource(ImpressionController, r"/v1/bms/impression/<int:imid>/", r"/v1/bms/impression/")
     api.add_resource(DiaryController, r"/v1/bms/diary/<int:did>/", r"/v1/bms/diary/")
     api.add_resource(CapriccioController, r"/v1/bms/capriccio/<int:cid>/", r"/v1/bms/capriccio/")
+    api.add_resource(AddressController, r"/v1/bms/address/<int:aid>/", r"/v1/bms/address/")
 
     return app
